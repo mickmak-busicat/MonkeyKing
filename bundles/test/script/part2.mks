@@ -1,0 +1,28 @@
+sleep 5
+branch-screen finished-boss-notice .
+jump-false boss-stage
+
+pass-screen agreement-screen . . . . .
+pass-screen title-screen . . . . .
+tap-until-screen nickname-screen . . . . .
+tap name-box-position
+sleep 0.5
+input-text RANDOM
+press KEYCODE_ENTER
+tap confirm-name-button
+sleep 3
+sleep 1
+checkpoint stage1
+drag 634,764 234,901 0.8
+sleep 3
+pass-screen friend-combo-notice 1 . . . true
+branch-screen boss-notice .
+jump-false stage1
+checkpoint boss-stage
+drag 506,387 242,727 0.8
+sleep 3
+branch-screen finished-boss-notice .
+jump-false boss-stage
+sleep 5
+
+# drag hiahfid-x

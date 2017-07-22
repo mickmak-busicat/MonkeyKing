@@ -1,0 +1,7 @@
+[INFO] Booting up the game: {'action': 'bootup'}
+[INFO] MonkeyKing sleep event: {'duration': 5, 'action': 'sleep'}
+[INFO] Wait until screen appears: {'screenId': 'title-screen', 'action': 'wait-screen'}
+[WAIT] Attempt: 1 of 40
+[INFO] Backup game account data: {'action': 'backup-game'}
+[INFO] Shutting down the game: {'action': 'shutdown'}
+[END] Completed all scripts.

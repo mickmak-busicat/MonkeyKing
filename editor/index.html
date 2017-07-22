@@ -1,0 +1,301 @@
+<script src="jquery.min.js"></script>
+
+<script>
+var None = null;
+var False = false;
+var True = true;
+var DEFAULTS = {};
+var ACTION_MAP = {
+        'wait-screen': {
+            'func': 'amWaitUntilScreen',
+            'parameterKey': [
+                ['screenId', None, 'str'],
+                ['maxAttempt', DEFAULTS['waitUntilScreenMaxAttempt'], 'int'],
+                ['interval', DEFAULTS['waitUntilScreenInterval'], 'int'],
+                ['threshold', DEFAULTS['checkScreenThreshold'], 'float'],
+                ['optional', False, 'bool']
+            ],
+            'log': '[INFO] Wait until screen appears'
+        },
+        'branch-screen': {
+            'func': 'amBranchIfScreen',
+            'parameterKey': [
+                ['screenId', None, 'str'],
+                ['threshold', DEFAULTS['checkScreenThreshold'], 'float']
+            ],
+            'log': '[INFO] Branch if screen check'
+        },
+        'tap-until-screen': {
+            'func': 'amTapUntilScreen',
+            'parameterKey': [
+                ['screenId', None, 'str'],
+                ['maxTap', DEFAULTS['waitUntilScreenMaxAttempt'], 'int'],
+                ['interval', DEFAULTS['waitUntilScreenInterval'], 'int'],
+                ['threshold', DEFAULTS['checkScreenThreshold'], 'float'],
+                ['position', None, 'pos'],
+                ['optional', False, 'bool']
+            ],
+            'log': '[INFO] Trying to pass screen'
+        },
+        'pass-screen': {
+            'func': 'amPassScreen',
+            'parameterKey': [
+                ['screenId', None, 'str'],
+                ['maxAttempt', DEFAULTS['waitUntilScreenMaxAttempt'], 'int'],
+                ['interval', DEFAULTS['waitUntilScreenInterval'], 'int'],
+                ['threshold', DEFAULTS['checkScreenThreshold'], 'float'],
+                ['position', None, 'pos'],
+                ['optional', False, 'bool']
+            ],
+            'log': '[INFO] Trying to pass screen'
+        },
+        'sleep': {
+            'func': 'amSleep',
+            'parameterKey': [['duration', 0, 'float']],
+            'log': '[INFO] MonkeyKing sleep event'
+        },
+        'shell': {
+            'func': 'amRunShell',
+            'parameterKey': [['cmd', '', 'str']],
+            'log': '[INFO] Run adb shell'
+        },
+
+        'tap': {
+            'func': 'amTap',
+            'parameterKey': [['position', None, 'pos']],
+            'log': '[INFO] Tap event'
+        },
+        'hold': {
+            'func': 'amHold',
+            'parameterKey': [['position', None, 'pos']],
+            'log': '[INFO] Hold event'
+        },
+        'release': {
+            'func': 'amRelease',
+            'parameterKey': [],
+            'log': '[INFO] Release event'
+        },
+        'drag': {
+            'func': 'amDrag',
+            'parameterKey': [['from', None, 'pos'], ['to', None, 'pos'], ['duration', 0, 'float']],
+            'log': '[INFO] Drag event'
+        },
+        'press': {
+            'func': 'amPress',
+            'parameterKey': [['keyCode', None, 'str']],
+            'log': '[INFO] Press a key'
+        },
+        'input-text': {
+            'func': 'amInputText',
+            'parameterKey': [['text', '', 'str']],
+            'log': '[INFO] Input a string'
+        },
+
+        'bootup': {
+            'func': 'amBootupGame',
+            'parameterKey': [],
+            'log': '[INFO] Booting up the game'
+        },
+        'shutdown': {
+            'func': 'amShutdownGame',
+            'parameterKey': [],
+            'log': '[INFO] Shutting down the game'
+        },
+        'desktop': {
+            'func': 'amShowDesktop',
+            'parameterKey': [],
+            'log': '[INFO] Show desktop'
+        },
+        'backup-game': {
+            'func': 'amBackupGameAccount',
+            'parameterKey': [],
+            'log': '[INFO] Backup game account data'
+        },
+        'reset-game': {
+            'func': 'amResetGameAccount',
+            'parameterKey': [],
+            'log': '[INFO] Reset the game to beginning'
+        },
+
+        'jump': {
+            'func': 'amJump',
+            'parameterKey': [['target', None, 'str']],
+            'log': '[INFO] Jump to'
+        },
+        'jump-true': {
+            'func': 'amJumpIfTrue',
+            'parameterKey': [['target', None, 'str']],
+            'log': '[INFO] Jump to if branchIf is True'
+        },
+        'jump-false': {
+            'func': 'amJumpIfFalse',
+            'parameterKey': [['target', None, 'str']],
+            'log': '[INFO] Jump to if branchIf is False'
+        },
+        'checkpoint': {
+            'func': '',
+            'parameterKey': [['id', None, 'str']],
+            'log': '-- [CHECKPOINT] --'
+        },
+        'exit': {
+            'func': 'exitProgram',
+            'parameterKey': [['message', 'No info', 'str']],
+            'log': '[INFO] Urget exit program'
+        },
+        'save-snapshot': {
+            'func': 'amSaveSnapshot',
+            'parameterKey': [],
+            'log': '[INFO] Save snapshot'
+        },
+        'save-result-screen': {
+            'func': 'amSaveResultScreen',
+            'parameterKey': [],
+            'log': '[INFO] Save result screen'
+        }
+    };
+
+function getScriptCursorPosition(){
+    var area = $('#script');
+    var lines = area.val().split("\n").map(function(a){ return a+'$'; });
+    var targetLine = 0;
+    var targetChar = 0;
+    var cursor = area[0].selectionStart;
+    for(var i=0; i<lines.length; i++){
+        if(lines[i].length >= cursor){
+            targetChar = (lines[i] && lines[i][cursor-1])=='$'?0:cursor;
+            targetLine = (lines[i] && lines[i][cursor-1])=='$'?i+1:i;
+            break;
+        }else{
+            cursor -= lines[i].length;
+        }
+    }
+
+    return {c: targetChar, line: targetLine};
+}
+function selectNextTabText(){
+    var area = $('#script');
+    var cursor = area[0].selectionStart;
+    var openTag = area.val().indexOf('<', cursor);
+    var closeTag = area.val().indexOf('>', cursor);
+    var currentSelectionStart = area[0].selectionStart;
+    var currentSelectionEnd = area[0].selectionEnd;
+
+    if(openTag==currentSelectionStart && currentSelectionEnd == closeTag+1 && area.val().indexOf('<', currentSelectionEnd+1) != -1){
+        area[0].selectionStart = area.val().indexOf('<', currentSelectionEnd+1);
+        area[0].selectionEnd = area.val().indexOf('>', currentSelectionEnd+1)+1;
+    }else if(openTag==currentSelectionStart && currentSelectionEnd == closeTag+1){
+        area[0].selectionStart = area.val().indexOf('<');
+        area[0].selectionEnd = area.val().indexOf('>')+1;
+    }else if (openTag!=-1 && closeTag!=-1 && closeTag > openTag){
+        area[0].selectionStart = openTag;
+        area[0].selectionEnd = closeTag+1;
+    }else if(closeTag!=-1 && closeTag < openTag || closeTag!=-1 && openTag==-1){
+        area[0].selectionStart = area.val().lastIndexOf('<', cursor);
+        area[0].selectionEnd = closeTag+1;
+    }else if(area.val().indexOf('<')!=-1){
+        area[0].selectionStart = area.val().indexOf('<');
+        area[0].selectionEnd = area.val().indexOf('>')+1;
+    }
+}
+function selectPrevTabText(){
+    var area = $('#script');
+    var cursor = area[0].selectionStart;
+    var openTag = area.val().lastIndexOf('<', cursor);
+    var closeTag = area.val().lastIndexOf('>', cursor);
+    var currentSelectionStart = area[0].selectionStart;
+    var currentSelectionEnd = area[0].selectionEnd;
+
+    if(openTag==currentSelectionStart && currentSelectionEnd == closeTag+1 && area.val().lastIndexOf('<', currentSelectionEnd+1) != -1){
+        area[0].selectionStart = area.val().lastIndexOf('<', currentSelectionEnd+1);
+        area[0].selectionEnd = area.val().lastIndexOf('>', currentSelectionEnd+1)+1;
+    }else if(openTag==currentSelectionStart && currentSelectionEnd == closeTag+1){
+        area[0].selectionStart = area.val().lastIndexOf('<');
+        area[0].selectionEnd = area.val().lastIndexOf('>')+1;
+    }else if (openTag!=-1 && closeTag!=-1 && closeTag > openTag){
+        area[0].selectionStart = openTag;
+        area[0].selectionEnd = closeTag+1;
+    }else if(closeTag!=-1 && closeTag < openTag || closeTag!=-1 && openTag==-1){
+        area[0].selectionStart = area.val().lastIndexOf('<', cursor-1);
+        area[0].selectionEnd = area.val().lastIndexOf('>', cursor)+1;
+    }else if(area.val().lastIndexOf('<')!=-1){
+        area[0].selectionStart = area.val().lastIndexOf('<');
+        area[0].selectionEnd = area.val().lastIndexOf('>')+1;
+    }
+}
+function getLineText(index){
+    var area = $('#script');
+    var lines = area.val().split("\n");
+    return lines[index];
+}
+function autoComplete(lineText){
+    var stripped = lineText.replace(' ', '');
+    if(ACTION_MAP[stripped]){
+        var area = $('#script');
+        var content = area.val();
+        var cursor = area[0].selectionStart;
+        var beforeText = content.substring(0, cursor);
+        var afterText = content.substring(cursor);
+        var additionText = ACTION_MAP[stripped].parameterKey.map(function(m){ return "<"+m[0]+":"+m[2]+">"; }).join(' ');
+        area.val(beforeText+" "+ additionText+afterText);
+        
+        var endOfLine = area.val().indexOf("\n", cursor);
+        area[0].selectionStart = cursor;
+        area[0].selectionEnd = (endOfLine==-1)?area.val().length:endOfLine;
+
+        return true;
+    }else{
+        return false;
+    }
+}
+$(document).ready(function(){
+    var area = $('#script');
+
+    area.on('keydown', function(e){
+        var curPos = getScriptCursorPosition();
+        if(e.keyCode === 9){
+            e.preventDefault();
+            if(!autoComplete(getLineText(curPos.line))){
+                if(!e.shiftKey){
+                    selectNextTabText();
+                }else{
+                    selectPrevTabText();
+                }
+                
+            }
+        }else if(e.keyCode === 83 && e.metaKey){
+            e.preventDefault();
+            console.log('cmd s?');
+        }
+    });
+
+    $('#commandList').html(Object.keys(ACTION_MAP).join('<br>'));
+});
+</script>
+
+<style>
+textarea{
+    color: #1b7928;
+    font-size: 18px;
+    font-family: monospace;
+    background: #deeadd;
+    border: none;
+    padding: 8px;
+    width: 100%;
+    height: 100%;
+}
+#commandList {
+    position: fixed;
+    right: 0px;
+    bottom: 0px;
+    width: 200px;
+    height: 400px;
+    background: rgba(41, 41, 41, 0.7);
+    color: #fff;
+    font-family: monospace;
+    overflow-y: scroll;
+    text-align: right;
+}
+</style>
+
+<div id="commandList"></div>
+<textarea id="script"></textarea>

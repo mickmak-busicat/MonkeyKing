@@ -1,0 +1,10 @@
+[INFO] Booting up the game: {'action': 'bootup'}
+[INFO] MonkeyKing sleep event: {'duration': 5, 'action': 'sleep'}
+[INFO] Wait until screen appears: {'screenId': 'news-popup', 'action': 'wait-screen'}
+[WAIT] Attempt: 1 of 5
+[WAIT] Attempt: 2 of 5
+[WAIT] Attempt: 3 of 5
+[WAIT] Attempt: 4 of 5
+[WAIT] Attempt: 5 of 5
+[WAIT FAIL] Screen check failed: {'rect': (282, 1154, 144, 107), 'file': 'cap/news-popup.png', 'id': 'news-popup'}
+[ERROR] Script exception: {'screenId': 'news-popup', 'action': 'wait-screen'}

@@ -1,0 +1,28 @@
+[INFO] Booting up the game: {'action': 'bootup'}
+[INFO] MonkeyKing sleep event: {'duration': 5, 'action': 'sleep'}
+[INFO] Wait until screen appears: {'screenId': 'news-popup', 'action': 'wait-screen'}
+[WAIT] Attempt: 1 of 5
+[WAIT] Attempt: 2 of 5
+[WAIT] Attempt: 3 of 5
+[WAIT] Attempt: 4 of 5
+[WAIT] Attempt: 5 of 5
+[WAIT FAIL] Screen check failed: {'rect': (282, 1154, 144, 107), 'file': 'cap/news-popup.png', 'id': 'news-popup'}
+[INFO] Tap event: {'action': 'tap', 'position': (400, 400)}
+[INFO] Wait until screen appears: {'screenId': 'news-popup', 'action': 'wait-screen'}
+[WAIT] Attempt: 1 of 5
+[WAIT] Attempt: 2 of 5
+[WAIT] Attempt: 3 of 5
+[WAIT] Attempt: 4 of 5
+[INFO] Tap event: {'action': 'tap', 'position': 'close-news-button'}
+[INFO] Wait until screen appears: {'screenId': 'newbie-popup', 'action': 'wait-screen'}
+[WAIT] Attempt: 1 of 5
+[INFO] Tap event: {'action': 'tap', 'position': 'close-newbie-button'}
+[INFO] MonkeyKing sleep event: {'duration': 2, 'action': 'sleep'}
+[INFO] Save snapshot: {'action': 'save-snapshot'}
+[INFO] Press a key: {'keyCode': 'KEYCODE_APP_SWITCH', 'action': 'press'}
+[INFO] MonkeyKing sleep event: {'duration': 1, 'action': 'sleep'}
+[INFO] Branch if screen check: {'screenId': 'switch-crash?', 'action': 'branch-screen'}
+[INFO] Jump to if branchIf is False: {'target': 'drag-to-close-app', 'action': 'jump-false'}
+[FALSE BRANCH] branchIf state: False
+[INFO] Drag event: {'duration': 1, 'action': 'drag', 'from': 'close-app-drag-start', 'to': 'close-app-drag-end'}
+[END] Completed all scripts.

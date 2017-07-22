@@ -1,0 +1,104 @@
+pass-screen agreement-screen pass
+pass-screen title-screen pass
+until nickname-screen
+tap name-box-position
+sleep 0.5
+inputText RANDOM
+press KEYCODE_ENTER
+tap confirm-name-button
+pass-screen happy-4p-screen pass
+sleep 3
+pass-screen attack-tutor-notice pass
+sleep 1
+checkpoint stage1
+drag (634, 764) (234, 901) 0.8
+sleep 3
+pass-screen friend-combo-notice pass optional --maxAttempt 1
+pass-screen pass-item-notice pass optional --maxAttempt 1
+pass-screen pass-hit-through-notice pass optional --maxAttempt 1
+branch-screen boss-notice
+jump-false stage1
+tap pass-boss-notice
+checkpoint boss-stage
+drag (506, 387) (242, 727) 0.8
+sleep 3
+branch-screen finished-boss-notice
+jump-false boss-stage
+tap pass-finished-boss-notice
+sleep 5
+pass-screen tutor-clear-notice pass
+tap-until-screen tutor-complete-screen skip-to-tutor-complete-screen --maxTap 99 --interval 2
+sleep 1
+tap google-account-next-button
+sleep 1
+tap google-account-cancel-button
+sleep 1
+tap google-account-cancel-ok-button
+sleep 1
+tap pass-tutor-complete-screen
+sleep 3
+pass-screen news-notice pass
+sleep 1
+pass-screen login-bonus-notice pass
+sleep 1
+pass-screen message-notice pass
+sleep 1
+pass-screen make-friend-notice pass
+sleep 1
+pass-screen confirm-later-notice pass
+sleep 2
+checkpoint receive-gift
+wait-screen inbox-screen
+branch-screen inbox-unread-message
+jump-false get-stone
+tap get-first-gift
+sleep 1
+tap confirm-get-gift-button
+checkpoint loading-get-gift
+sleep 3
+branch-screen loading-popup
+jump-true loading-get-gift
+sleep 0.5
+jump receive-gift
+
+checkpoint get-stone
+sleep 0.5
+tap home-button
+sleep 0.5
+tap mission-button
+sleep 0.5
+checkpoint mission
+# wait-screen mission-screen
+branch-screen completed-mission
+jump-false edit-team
+tap redeem-first-mission
+tap confirm-redeem-button
+checkpoint loading-redeem-mission
+sleep 3
+branch-screen loading-popup
+jump-true loading-redeem-mission
+sleep 0.5
+jump mission
+
+tap gacha-button
+tap first-pool-gacha
+tap confirm-gacha-button
+wait-screen gacha-screen
+drag gacha-drag-start gacha-drag-end 1
+tap-until-screen monster-detail-screen (360, 600)
+save-result-screen
+
+
+checkpoint edit-team
+tap edit-team-button
+sleep 0.5
+tap change-friend-monster-button
+sleep 0.5
+tap friend-monster-select
+sleep 0.5
+tap select-a-monster
+sleep 0.5
+confirm-select-monster-button
+wait-screen edit-team-screen
+
+## change day > login bonus > message
