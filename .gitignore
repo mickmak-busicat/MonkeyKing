@@ -1,4 +1,4 @@
 apk/
 dummy/
-*.$py.class
+*$py.class
 .DS_Store
