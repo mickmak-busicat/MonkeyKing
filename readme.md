@@ -2,7 +2,7 @@
 Monkey King Library is a simple Jython tool that make use of `monkeyrunner` in Android Developer Tools to run customized automation scripts(.mks). You can write your own mks script to automate a task on your Android environment such as doing some repetitive tasks or doing App test automations. **This library is mainly designed for rerolling first summons(or GACHA)(aka 刷首抽 in Chinese) in a modern mobile game**. It provided some useful methods to help achieve the reroll process in a more convenient way.
 
 ## How to contribute:
-Basically, I will non-regularly upload some script bundles of a few most recent&famous mobile game to `bundle` folder. Feel free to get it and try. It is soooo welcome for anyone who is also interested in writing script bundle, there is a quick guide in WIKI page. Just read it and follow the instruction. :D
+Basically, I will non-regularly upload some script bundles of a few most recent&famous mobile game to `bundle` folder. Feel free to get it and try. It is soooo welcome for anyone who is also interested in writing script bundle, there is a quick guide in WIKI page. Simply read it and follow the instruction. :D
 
 ## Runtime environment setup:
 1. Major setup:
@@ -45,12 +45,12 @@ Depends on different script settings, the tool should be able to generate some u
 
 The result format will be shown inside the script bundle setting.
 
+## Bundle structures:
+About script bundles,
+
 ## Configurations:
 
 ## Available Methods:
-WIKI
-
-## Bundle structures:
 WIKI
 
 ## Pending items:
