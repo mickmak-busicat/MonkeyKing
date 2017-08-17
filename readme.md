@@ -58,14 +58,16 @@ About script bundles,
 1. View APK start activity:
     - To start the game with using code, you must need to know the main activity name. It can be achieved by using `aapt` tool from Android build tools
   ```
-  ./aapt d badging ~/monkeyscript/apk/cf.apk 
+  ./aapt d badging ~/monkeyscript/apk/cf.apk
   ```
+  
     - It should able to display a list of attributes of the apk. Locate `launchable-activity` and use it in config file.
+
   ```
   ...
   launchable-activity: name='jp.wonderplanet.Yggdrasil.BULL'  label='Crash Fever' icon=''
   ...
-  ```
+  ``
 
 2.
 
