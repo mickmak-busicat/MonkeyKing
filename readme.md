@@ -11,7 +11,7 @@ Basically, I will non-regularly upload some script bundles of a few most recent&
 
 2. Other setup:
     - `aapt` build-tools available
-    - Android emulator(NOX player is tested.)
+    - Android emulator(NOX player is tested.) or Android device
 
 ## Usage:
 1. **Install the target APP on your Android**
@@ -55,7 +55,21 @@ About script bundles,
 
 ## Configurations:
 
-## Available Methods:
+1. View APK start activity:
+    - To start the game with using code, you must need to know the main activity name. It can be achieved by using `aapt` tool from Android build tools
+  ```
+  ./aapt d badging ~/monkeyscript/apk/cf.apk 
+  ```
+    - It should able to display a list of attributes of the apk. Locate `launchable-activity` and use it in config file.
+  ```
+  ...
+  launchable-activity: name='jp.wonderplanet.Yggdrasil.BULL'  label='Crash Fever' icon=''
+  ...
+  ```
+
+2.
+
+## Script documentation:
 WIKI
 
 ## Pending items:
