@@ -62,16 +62,18 @@ About script bundles,
 ```./aapt d badging ~/monkeyscript/apk/cf.apk```
 
 
+
   
-    - It should able to display a list of attributes of the apk. Locate `launchable-activity` and use it in config file.
+
+  - It should able to display a list of attributes of the apk. Locate `launchable-activity` and use it in config file.
 
 
 
-  ```
-  ...
-  launchable-activity: name='jp.wonderplanet.Yggdrasil.BULL'  label='Crash Fever' icon=''
-  ...
-  ```
+```
+...
+launchable-activity: name='jp.wonderplanet.Yggdrasil.BULL'  label='Crash Fever' icon=''
+...
+```
 
 
 2.
