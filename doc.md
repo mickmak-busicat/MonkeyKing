@@ -154,3 +154,15 @@ Usage:
 	- One gacha have 5~10 accounts
 	- Stat showing the gacha pool (~100 account left, 1% SR, 99% R)
 	
+Win setup adb:
+
+https://developer.android.com/studio/index.html
+> scroll down to get only SDK: "Get just the command line tools"
+> unzip and move to a better directory, eg C:\adt
+> cmd cd C:\adt\tools\bin
+> sdkmanager "build-tools;26.0.1"
+> sdkmanager "platform-tools"
+> create framework folder under /tools
+> copy platform-tools to framework
+> copy lib to framework
+> OK
