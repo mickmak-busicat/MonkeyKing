@@ -59,9 +59,7 @@ About script bundles,
     - To start the game with using code, you must need to know the main activity name. It can be achieved by using `aapt` tool from Android build tools
 
 
-  ```
-  ./aapt d badging ~/monkeyscript/apk/cf.apk
-  ```
+```./aapt d badging ~/monkeyscript/apk/cf.apk```
 
 
   
